@@ -1,0 +1,133 @@
+###
+POST http://localhost:8000/api/users/register/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "1234",
+    "password2": "1234"
+}
+
+###
+POST http://localhost:8000/api/users/register/
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "password": "1234",
+    "password2": "1234"
+}
+###
+POST http://localhost:8000/api/users/login/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "1234"
+}
+
+
+###
+POST http://localhost:8000/api/users/login/
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "password": "1234"
+}
+
+###
+POST http://localhost:8000/api/users/login/
+Content-Type: application/json
+
+{
+    "username": "customer1",
+    "password": "1234"
+}
+
+###
+POST http://localhost:8000/api/users/logout/
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:8000/api/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2NDAzMTgzLCJpYXQiOjE3NTYzOTk1ODMsImp0aSI6IjIxMDc0ZjViZmY0ZTQ1ZTJhMmQ1OGU0ZTFmYjI0N2JjIiwidXNlcl9pZCI6IjEifQ.ApT3znTw2J493C30eK_kd-Yv5fayO0M4cyEDiADjOYg
+
+{
+    "product_data":{
+      "name": "Cough Syrup",
+      "description": "This is Cough Syrup",
+      "manufacturer": "ABC Pharma",
+      "price": 1000,
+      "stock": 50,
+      "features": {
+          "flavor": "Cherry",
+          "size": "200ml"
+      }
+    },
+    "stock":50
+}
+
+
+###
+PATCH http://localhost:8000/api/products/25f15919-79e3-4a75-bbce-c5e81f2c5111/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDM4OTU5LCJpYXQiOjE3NTYwMzUzNTksImp0aSI6IjZhZjFjZmU4ZTBjYjQzODU5NDdiMzFiNmY0ZTc5OGY0IiwidXNlcl9pZCI6IjEifQ.HzeFEuiJeNQ0GLOmMUMgGKF7eK-20UcxiCYQi7M2Ggk
+
+{
+    "stock": 100
+}
+
+
+###
+POST http://localhost:8000/api/orders/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MTYyMjA0LCJpYXQiOjE3NTYxNTg2MDQsImp0aSI6IjM3YjFiNjUzYjMxMDQ4Y2ZiYzgwMTJlMjcyNGRjNWM0IiwidXNlcl9pZCI6IjQifQ.8isGCqYMOIXLv7xAJHOTJ4z99MIGwGfMKe6J5S9RCc8
+
+{
+  "status": "Pending",
+  "payment_method": "COD",
+  "shipping_address": "Mumbai, India",
+  "billing_address": "Mumbai, India",
+  "items_write": [
+    {
+      "product_id": "a4bf10c1-b58c-41da-a136-048082d2129f",
+      "quantity": 100
+    }
+  ] 
+}
+
+
+# ###
+# POST http://localhost:8000/api/orders/orderitem/
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MDM1Njg3LCJpYXQiOjE3NTYwMzIwODcsImp0aSI6IjIyMGUyMDUyYTkwMTRhY2NhMTgyMzEwNWY3OWRjN2ZjIiwidXNlcl9pZCI6IjMifQ.nlcS1hXTsvAKO0XAkTX6wpQIA_N_tk7oiBhb_VkscaQ
+
+
+# {
+#   "order": "7b0fb392-184a-41f0-9479-932cdd03d07d",
+# }
+
+###
+POST http://localhost:8000/api/orders/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MzI5NDYyLCJpYXQiOjE3NTYzMjU4NjIsImp0aSI6IjliMjIyZDM3YTM1NzRmMDBiZTlkZDkzZDQwZGRkYjI3IiwidXNlcl9pZCI6IjEifQ.9d25syHg8G92BI9zJnNR_3M2qvr3ZkfiOoooFpdurG0
+
+{
+  "payment_method": "UPI",
+  "shipping_address": "Kolkata, India",
+  "billing_address": "Kolkata, India",
+  "items": [
+    {
+      "product_id": "a4bf10c1-b58c-41da-a136-048082d2129f",
+      "quantity": 2
+    },
+    {
+      "product_id": "25f15919-79e3-4a75-bbce-c5e81f2c5111",
+      "quantity": 5
+    }
+  ] 
+}
