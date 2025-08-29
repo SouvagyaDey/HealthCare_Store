@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from django.db.models import Sum
-from products.models import Product  # MongoDB Product
-from rest_framework.response import Response
+from products.models import ProductStore
+from products.models import Product
 
 class OrderStatus(models.TextChoices):
     PENDING = "Pending", "pending"
@@ -21,45 +21,44 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     shipping_address = models.TextField(blank=True, null=True)
-    total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-
-    def update_total(self):
-        """Recalculate and update total_amount."""
-        self.total_amount = sum(item.subtotal for item in self.items.all())
-        self.save(update_fields=["total_amount"])
-
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"Order {self.id} - {self.user} ({self.status})"
+    
+    def update_total(self):
+        self.total_amount = self.order_items.aggregate(
+            total=Sum(models.F("price") * models.F("quantity"))
+        )["total"] or 0
+        self.save(update_fields=["total_amount"])
+
 
 class OrderItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    product_id = models.UUIDField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_items")
+    product = models.ForeignKey(ProductStore, on_delete=models.CASCADE, related_name="product_items")
     quantity = models.PositiveIntegerField()
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
 
-    def details(self):
-        product = Product.objects.using("products").get(id=self.product_id)
-        return {
-            "product_id": self.product_id,
-            "product_name": product.name,
-            "price": product.price,
-            "features": product.features
-        }
+    @property
+    def price(self):
+        try:
+            product = Product.objects.using("Products").get(id=self.product.id)
+            return product.price
+        except Product.DoesNotExist:
+            return None
 
     @property
     def subtotal(self):
-        return self.details()["price"] * self.quantity
+        return self.price * self.quantity
 
     def save(self, *args, **kwargs):
+        if not self.price:
+            self.price = self.product.price
         super().save(*args, **kwargs)
-        # update total on order when item is saved
         self.order.update_total()
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
-        # update total on order when item is deleted
         self.order.update_total()
-
-    def __str__(self):
-        return f"{self.details()['product_name']} x {self.quantity} (Order {self.order.id})"

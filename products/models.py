@@ -27,7 +27,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
 
     # Dynamic attributes per category (Mongo-friendly)
-    features = models.JSONField(default=dict, blank=True)
+    features = models.JSONField(default=dict, blank=False,)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,20 +60,18 @@ class Product(models.Model):
 
 class ProductStore(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product_id = models.UUIDField()  # store Mongo UUID only
+    product_id = models.UUIDField()
     stock = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def product(self):
-        from .models import Product
         try:
             return Product.objects.using("products").get(id=self.product_id)
         except Product.DoesNotExist:
             return None
-
-        
+    
 
 class ProductReview(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -90,8 +88,3 @@ class ProductReview(models.Model):
                 violation_error_message='Rating must be between 1 and 5.'
             )
         ]
-
-
-
-
-

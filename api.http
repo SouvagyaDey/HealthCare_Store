@@ -52,23 +52,22 @@ Content-Type: application/json
 {}
 
 ###
-POST http://localhost:8000/api/products/
+POST http://localhost:8000/api/products/productstore/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2NDAzMTgzLCJpYXQiOjE3NTYzOTk1ODMsImp0aSI6IjIxMDc0ZjViZmY0ZTQ1ZTJhMmQ1OGU0ZTFmYjI0N2JjIiwidXNlcl9pZCI6IjEifQ.ApT3znTw2J493C30eK_kd-Yv5fayO0M4cyEDiADjOYg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2NTA0NTEzLCJpYXQiOjE3NTY1MDA5MTMsImp0aSI6ImE3YWM0MjcwMDJiMzQzNjNiYzIwNmZjOTdjMDJjY2JmIiwidXNlcl9pZCI6IjEifQ.PJg09VWn9ng9bbHWr41MckJN8zCp5kZop3qBteOei8s
 
 {
-    "product_data":{
-      "name": "Cough Syrup",
-      "description": "This is Cough Syrup",
-      "manufacturer": "ABC Pharma",
-      "price": 1000,
-      "stock": 50,
+  "product_data": {
+    "name": "Product Name",
+    "price": 100.0,
+    "manufacturer": "Product Manufacturer",
+    "description": "Product Description",
       "features": {
-          "flavor": "Cherry",
-          "size": "200ml"
+          "feature1": "value1",
+          "feature2": "value2"
       }
     },
-    "stock":50
+    "stock":60
 }
 
 
@@ -85,7 +84,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ###
 POST http://localhost:8000/api/orders/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2MTYyMjA0LCJpYXQiOjE3NTYxNTg2MDQsImp0aSI6IjM3YjFiNjUzYjMxMDQ4Y2ZiYzgwMTJlMjcyNGRjNWM0IiwidXNlcl9pZCI6IjQifQ.8isGCqYMOIXLv7xAJHOTJ4z99MIGwGfMKe6J5S9RCc8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2NDk4NDk5LCJpYXQiOjE3NTY0OTQ4OTksImp0aSI6IjM5ZGFmMDY2YjczZDQzNjg5MWYwNDc2MGYwZDc1MzE5IiwidXNlcl9pZCI6IjEifQ.oHXpqhPMEELWVZzSj6IRRM2_AY8ZeqJMAmN6gmZ1Nmw
 
 {
   "status": "Pending",
